@@ -1,4 +1,5 @@
 import tensorflow as tf
+import matplotlib.pyplot as plt
 
 
 def load_pretrained():
@@ -9,4 +10,5 @@ def load_pretrained():
 
 
 def plot_history(history):
+    plt.savefig("")
     pass
