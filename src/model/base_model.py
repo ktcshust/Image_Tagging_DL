@@ -25,6 +25,7 @@ class BaseMultiLabelCNN(keras.Model):
         batch_shape = tf.shape(batch_input)
         if len(batch_shape) == 3:
             batch_input = batch_input[tf.newaxis]
+
         logits = self(batch_input)
         pred = logits > 0.0
         if as_int:
