@@ -54,7 +54,7 @@ class ResNet50(keras.Model):
 
         return logits
 
-    def predict_label(self, inputs, as_int=False):
+    def predict(self, inputs, as_int=False):
         logits = self.call(inputs)
         if as_int:
             pred_labels = tf.cast(logits > 0.0, dtype=tf.int32)
