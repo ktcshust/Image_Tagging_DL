@@ -1,4 +1,4 @@
-# Multi-label_CNN
+# Image Tagging using CNN
 Project of course Deep learning and its applications. SOICT - HUST
 
 ## Description
