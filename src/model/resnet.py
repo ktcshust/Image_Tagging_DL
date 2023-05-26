@@ -14,8 +14,7 @@ class ResNet50(keras.Model):
         self.relu = keras.layers.Activation('relu')
         self.max_pooling = keras.layers.MaxPooling2D((3, 3), strides=(2, 2))
 
-        self.avg_pooling = keras.layers.AveragePooling2D((2, 2), padding='same')
-        self.flatten = keras.layers.Flatten()
+        self.global_avg_pooling = keras.layers.GlobalAveragePooling2D()
         self.dense = keras.layers.Dense(hidden_units, activation='relu')
         self.dropout = keras.layers.Dropout(0.3)
         self.fc = keras.layers.Dense(num_classes)
@@ -46,8 +45,7 @@ class ResNet50(keras.Model):
         x = self.stage_3(x)
         x = self.stage_4(x)
 
-        x = self.avg_pooling(x)
-        x = self.flatten(x)
+        x = self.global_avg_pooling(x)
         x = self.dropout(x)
         x = self.dense(x)
         logits = self.fc(x)
