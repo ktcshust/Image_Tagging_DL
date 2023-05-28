@@ -2,6 +2,7 @@ import tensorflow as tf
 from tensorflow import keras
 from src.model.block import AttentionBlockVGG
 
+
 class AttentionVGG(keras.Model):
     def __init__(self, hidden_units, num_classes, use_pretrained=False):
         super(AttentionVGG, self).__init__()
