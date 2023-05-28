@@ -3,5 +3,5 @@ csv_file: "data/labels.csv"
 image_dir: "data/images/"
 
 train_test_ratio: 0.85
-hidden_units: 1024
-epochs: 100
+hidden_units: 2048
+epochs: 50
