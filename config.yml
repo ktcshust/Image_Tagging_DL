@@ -1,5 +1,5 @@
-train_csv: "C:/Users/TheHS/Downloads/gannhan_new/gannhan_new/data/20200614.csv"
-train_dir: "C:/Users/TheHS/Downloads/gannhan_new/gannhan_new/data/resized/"
+train_csv: "D:/Dataset/scene_dataset/labels_normalized.csv"
+train_dir: "D:/Dataset/scene_dataset/images/"
 test_csv: ""
 test_dir: ""
 train_ratio: 0.85
@@ -7,13 +7,8 @@ hidden_units: 2048
 epochs: 50
 
 labels:
-  - HG
-  - HT
-  - TR
-  - CTH
-  - BD
-  - VH
-  - CTQ
-  - DQT
-  - KS
-  - CVN
+  - desert
+  - mountains
+  - sea
+  - sunset
+  - trees
