@@ -22,7 +22,7 @@ class BaseResNet50V2(keras.Model):
 
         return logits
 
-    def get_labels(self, batch_input, as_int=True):
+    def predict(self, batch_input, as_int=True):
         batch_shape = tf.shape(batch_input)
         if len(batch_shape) == 3:
             batch_input = batch_input[tf.newaxis]

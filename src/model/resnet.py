@@ -1,5 +1,3 @@
-import tensorflow as tf
-from src.model.identity_block import *
 from src.model.block import *
 
 

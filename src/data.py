@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import tensorflow as tf
 import numpy as np
@@ -12,21 +13,21 @@ def decode(image):
 
 def convert_path(image_paths, labels):
     images = tf.map_fn(fn=tf.io.read_file, elems=image_paths)
-    imsges = tf.map_fn(fn=decode, elems=images, fn_output_signature=tf.float32)
+    images = tf.map_fn(fn=decode, elems=images, fn_output_signature=tf.float32)
     return images, tf.cast(labels, tf.float32)
 
 
 def get_data_from_csv(path):
     """
     :return:
-        label's names: list[str],
-        image_path_with_label: list[tuple[str, list[int]]],
+        data: list[tuple[str, list[int]]],
     """
     df = pd.read_csv(path)
-    label_name = None
-    image_path_with_labels = None
+    data = []
+    for _, row in df.iterrows():
+        data.append((row['id'].split(os.path.sep)[-1], row['HG':'CVN']))
 
-    return label_name, image_path_with_labels
+    return data
 
 
 def extract_path_and_label(image_dir, image_path_with_label):
@@ -36,9 +37,15 @@ def extract_path_and_label(image_dir, image_path_with_label):
     return paths, labels
 
 
-def get_dataset(image_paths, labels, ratio=0.8):
+def get_dataset(image_paths, labels, ratio=0.8, test=False):
     buffer_size = len(image_paths)
     batch_size = 64
+    if test:
+        test_raw = (tf.data.Dataset
+                    .from_tensor_slices((image_paths, labels))
+                    .shuffle(buffer_size)
+                    .batch(batch_size))
+        return test_raw
 
     is_train = np.random.uniform(size=buffer_size) < ratio
 

@@ -10,5 +10,11 @@ def load_pretrained():
 
 
 def plot_history(history):
-    plt.savefig("")
+    # plt.savefig("")
+    pass
+
+def visualize_attention():
+    pass
+
+def apply_heatmap():
     pass
