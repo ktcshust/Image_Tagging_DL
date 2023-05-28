@@ -1,6 +1,9 @@
 from src.data import *
 from src.utils import *
 from src.model.base_model import *
+from src.model.resnet import *
+from src.model.attention_vgg import *
+from src.model.attention_resnet import *
 from src.losses import *
 from src.metrics import *
 import yaml
@@ -23,10 +26,13 @@ if __name__ == "__main__":
 
     hidden_units = config['hidden_units']
 
-    model = BaseMultiLabelCNN(pretrained, hidden_units, NUM_CLASSES)
+    model = BaseResNet50V2(hidden_units, NUM_CLASSES)
+    # model = ResNet50(hidden_units, NUM_CLASSES)
+    # model = AttentionVGG(hidden_units, NUM_CLASSES)
+    # model = AttentionResNet(hidden_units, NUM_CLASSES)
 
     model.compile(optimizer='adam',
-                  loss=cross_entropy_loss_with_logits, metrics=[accuracy])
+                  loss=entropy_loss_with_logits, metrics=[accuracy])
 
     print("Call model on batch of data for building graph:")
     eval_result = model.evaluate(val_ds, steps=5, return_dict=True)

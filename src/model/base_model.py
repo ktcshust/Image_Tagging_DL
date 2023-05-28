@@ -1,12 +1,13 @@
 import tensorflow as tf
 from tensorflow import keras
+from src.utils import load_pretrained
 
 
-class BaseMultiLabelCNN(keras.Model):
-    def __init__(self, preprocess_model, hidden_units, num_classes):
-        super(BaseMultiLabelCNN, self).__init__()
+class BaseResNet50V2(keras.Model):
+    def __init__(self,hidden_units, num_classes):
+        super(BaseResNet50V2, self).__init__()
         # pretrained model for feature extraction
-        self.preprocess_model = preprocess_model
+        self.pretrained = load_pretrained()
         # fix pretrained model's weights
         self.preprocess_model.trainable = False
         self.flatten = keras.layers.Flatten()

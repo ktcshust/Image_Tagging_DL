@@ -1,6 +1,6 @@
 import tensorflow as tf
 from src.model.identity_block import *
-from src.model.conv_block import *
+from src.model.block import *
 
 
 class ResNet50(keras.Model):
@@ -26,7 +26,7 @@ class ResNet50(keras.Model):
 
     def __make_stage(self, stage, filters, s, num_identity_blocks):
         stage = keras.Sequential()
-        stage.add(ConvolutionalBlock(filters=filters, s=s))
+        stage.add(ConvolutionBlock(filters=filters, s=s))
         for i in range(num_identity_blocks):
             stage.add(IdentityBlock(filters=filters))
 
