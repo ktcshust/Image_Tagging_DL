@@ -27,11 +27,11 @@ if __name__ == "__main__":
 
     model = BaseResNet50V2(hidden_units, NUM_CLASSES)
     # model = ResNet50(hidden_units, NUM_CLASSES)
-    # model = AttentionVGG(hidden_units, NUM_CLASSES)
-    # model = AttentionResNet(hidden_units, NUM_CLASSES)
+    # model = ACNNv1(hidden_units, NUM_CLASSES)
+    # model = ACNNv2(hidden_units, NUM_CLASSES)
 
     model.compile(optimizer='adam',
-                  loss=entropy_loss_with_logits, metrics=[accuracy])
+                  loss=entropy_loss_with_logits, metrics=[accuracy_score, f1_score])
 
     print("Training: ")
     history = model.fit(
