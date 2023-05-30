@@ -86,10 +86,17 @@ class ConvolutionBlock(keras.layers.Layer):
         return x
 
 
-class AttentionBlock(keras.layers.Layer):
-    def __init__(self, in_channels, out_channels, s):
-        super(AttentionBlock, self).__init__()
+class AttentionBlockV2(keras.layers.Layer):
+    def __init__(self, filters, s):
+        super(AttentionBlockV2, self).__init__()
 
+        in_channels, out_channels = filters
+        self.in_conv = keras.layers.Conv2D(
+            in_channels,
+            kernel_size=(1, 1),
+            strides=(1, 1),
+            bias_initializer='glorot_uniform'
+        )
         self.dw_conv = keras.layers.DepthwiseConv2D(
             kernel_size=(5, 5),
             padding='same',
@@ -108,33 +115,33 @@ class AttentionBlock(keras.layers.Layer):
             bias_initializer='glorot_uniform'
         )
 
-        self.conv2d = keras.layers.Conv2D(out_channels, kernel_size=(3, 3), strides=(s, s), padding='same',
-                                          bias_initializer='glorot_uniform')
-        self.bn = keras.layers.BatchNormalization()
+        self.out_conv2d = keras.layers.Conv2D(out_channels, kernel_size=(3, 3), strides=(s, s), padding='same',
+                                              bias_initializer='glorot_uniform')
+        self.in_bn = keras.layers.BatchNormalization()
+        self.out_bn = keras.layers.BatchNormalization()
         self.mul = keras.layers.Multiply()
         self.relu = keras.layers.Activation('relu')
 
     def call(self, inputs):
-        x_shortcut = inputs
-        x = inputs
-
+        x = self.in_conv(inputs)
+        x_shortcut = x
+        x = self.in_bn(x)
         x = self.dw_conv(x)
         x = self.zero_padding(x)
         x = self.dwd_conv(x)
 
         attention_weight = tf.nn.sigmoid(self.pw_conv(x))
         x = self.mul([x_shortcut, attention_weight])
-
-        x = self.conv2d(x)
-        x = self.bn(x)
+        x = self.out_conv2d(x)
+        x = self.out_bn(x)
         x = self.relu(x)
 
-        return x, attention_weight
+        return x
 
 
-class AttentionBlockVGG(keras.layers.Layer):
+class AttentionBlockV1(keras.layers.Layer):
     def __init__(self, attn_features, up_sampling_size):
-        super(AttentionBlockVGG, self).__init__()
+        super(AttentionBlockV1, self).__init__()
         self.up_sampling_size = up_sampling_size
         self.W_f = keras.layers.Conv2D(attn_features, kernel_size=1, padding='same', use_bias=False)
         self.W_g = keras.layers.Conv2D(attn_features, kernel_size=1, padding='same', use_bias=False)

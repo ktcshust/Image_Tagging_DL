@@ -9,14 +9,14 @@ class BaseResNet50V2(keras.Model):
         # pretrained model for feature extraction
         self.pretrained = load_pretrained()
         # fix pretrained model's weights
-        self.preprocess_model.trainable = False
-        self.flatten = keras.layers.Flatten()
+        self.pretrained.trainable = False
+        self.global_avg_pool = keras.layers.GlobalAveragePooling2D()
         self.dense = keras.layers.Dense(hidden_units, activation='relu')
         self.output_fc = keras.layers.Dense(num_classes)
 
     def call(self, batch_input):
-        feature_maps = self.preprocess_model(batch_input)
-        flatten_vectors = self.flatten(feature_maps)
+        feature_maps = self.pretrained(batch_input)
+        flatten_vectors = self.global_avg_pool(feature_maps)
         logits = self.dense(flatten_vectors)
         logits = self.output_fc(logits)
 

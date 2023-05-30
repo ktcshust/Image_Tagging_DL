@@ -1,11 +1,11 @@
 import tensorflow as tf
 from tensorflow import keras
-from src.model.block import AttentionBlockVGG
+from src.model.block import AttentionBlockV1
 
 
-class AttentionVGG(keras.Model):
+class ACNNv1(keras.Model):
     def __init__(self, hidden_units, num_classes, use_pretrained=False):
-        super(AttentionVGG, self).__init__()
+        super(ACNNv1, self).__init__()
 
         if use_pretrained:
             backbone = keras.applications.VGG16(include_top=False, weights="imagenet")
@@ -25,8 +25,8 @@ class AttentionVGG(keras.Model):
         self.dropout = keras.layers.Dropout(0.2)
         self.dense = keras.layers.Dense(hidden_units, activation='relu')
         self.output_fc = keras.layers.Dense(num_classes)
-        self.attn_1 = AttentionBlockVGG(256, (28, 28))
-        self.attn_2 = AttentionBlockVGG(256, (14, 14))
+        self.attn_1 = AttentionBlockV1(256, (28, 28))
+        self.attn_2 = AttentionBlockV1(256, (14, 14))
 
     def __make_convolution_block(self, filters, num_conv_layers):
         block = keras.Sequential()
