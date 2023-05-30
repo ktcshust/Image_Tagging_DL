@@ -3,6 +3,16 @@ from tensorflow import keras
 from src.model.block import AttentionBlockV1
 
 
+def _make_convolution_block(filters, num_conv_layers):
+    block = keras.Sequential()
+    for i in range(num_conv_layers):
+        block.add(keras.layers.Conv2D(filters, (3, 3), padding='same', bias_initializer='glorot_uniform'))
+        block.add(keras.layers.BatchNormalization())
+        block.add(keras.layers.ReLU())
+
+    return block
+
+
 class ACNNv1(keras.Model):
     def __init__(self, hidden_units, num_classes, use_pretrained=False):
         super(ACNNv1, self).__init__()
@@ -15,11 +25,11 @@ class ACNNv1(keras.Model):
             self.block_4 = keras.Sequential(backbone.layers[11:14])
             self.block_5 = keras.Sequential(backbone.layers[15:18])
         else:
-            self.block_1 = self.__make_convolution_block(64, 2)
-            self.block_2 = self.__make_convolution_block(128, 2)
-            self.block_3 = self.__make_convolution_block(256, 3)
-            self.block_4 = self.__make_convolution_block(512, 3)
-            self.block_5 = self.__make_convolution_block(512, 3)
+            self.block_1 = _make_convolution_block(64, 2)
+            self.block_2 = _make_convolution_block(128, 2)
+            self.block_3 = _make_convolution_block(256, 3)
+            self.block_4 = _make_convolution_block(512, 3)
+            self.block_5 = _make_convolution_block(512, 3)
         self.max_pool = keras.layers.MaxPooling2D()
         self.global_avg_pool = keras.layers.GlobalAveragePooling2D()
         self.dropout = keras.layers.Dropout(0.2)
@@ -27,15 +37,6 @@ class ACNNv1(keras.Model):
         self.output_fc = keras.layers.Dense(num_classes)
         self.attn_1 = AttentionBlockV1(256, (28, 28))
         self.attn_2 = AttentionBlockV1(256, (14, 14))
-
-    def __make_convolution_block(self, filters, num_conv_layers):
-        block = keras.Sequential()
-        for i in range(num_conv_layers):
-            block.add(keras.layers.Conv2D(filters, (3, 3), padding='same', bias_initializer='glorot_uniform'))
-            block.add(keras.layers.BatchNormalization())
-            block.add(keras.layers.ReLU())
-
-        return block
 
     def call(self, inputs):
         x = self.block_1(inputs)
