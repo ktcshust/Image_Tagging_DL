@@ -3,18 +3,6 @@ from tensorflow import keras
 from src.model.block import IdentityBlock, LargeKernelConvolution, ConvolutionBlock
 
 
-def _make_stage(filters, num_identity_blocks, use_conv_block=False):
-    stage = keras.Sequential()
-    if use_conv_block:
-        stage.add(ConvolutionBlock(filters=filters, s=2))
-    else:
-        stage.add(LargeKernelConvolution(filters, s=2))
-    for i in range(num_identity_blocks):
-        stage.add(IdentityBlock(filters=filters))
-
-    return stage
-
-
 class LKResidualNetwork(keras.Model):
     def __init__(self, hidden_units, num_classes):
         super(LKResidualNetwork, self).__init__()
