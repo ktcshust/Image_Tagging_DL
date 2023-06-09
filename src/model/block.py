@@ -86,9 +86,9 @@ class ConvolutionBlock(keras.layers.Layer):
         return x
 
 
-class AttentionBlockV2(keras.layers.Layer):
+class LargeKernelConvolution(keras.layers.Layer):
     def __init__(self, filters, s):
-        super(AttentionBlockV2, self).__init__()
+        super(LargeKernelConvolution, self).__init__()
 
         in_channels, out_channels = filters
         self.in_conv = keras.layers.Conv2D(
@@ -139,9 +139,9 @@ class AttentionBlockV2(keras.layers.Layer):
         return x
 
 
-class AttentionBlockV1(keras.layers.Layer):
+class AttentionBlock(keras.layers.Layer):
     def __init__(self, attn_features, up_sampling_size):
-        super(AttentionBlockV1, self).__init__()
+        super(AttentionBlock, self).__init__()
         self.up_sampling_size = up_sampling_size
         self.W_f = keras.layers.Conv2D(attn_features, kernel_size=1, padding='same', use_bias=False)
         self.W_g = keras.layers.Conv2D(attn_features, kernel_size=1, padding='same', use_bias=False)

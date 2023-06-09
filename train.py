@@ -4,8 +4,8 @@ from src.losses import *
 from src.utils import *
 from src.model.base_model import *
 from src.model.resnet import *
-from src.model.acnn_v1 import *
-from src.model.acnn_v2 import *
+from src.model.acnn_vgg import *
+from src.model.large_kernel import *
 import yaml
 
 if __name__ == "__main__":
