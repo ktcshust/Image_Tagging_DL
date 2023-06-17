@@ -4,7 +4,7 @@ from src.utils import load_pretrained
 
 
 class ViTL16(keras.Model):
-    def __init__(self, hidden_units, num_classes, patch_size, num_layers, d_model, num_heads, mlp_dim, dropout_rate):
+    def __init__(self, hidden_units, num_classes, patch_size=16, num_layers=16, d_model=256, num_heads=8, mlp_dim=512, dropout_rate=0.1):
         super(ViTL16, self).__init__()
         # Pretrained model for feature extraction
         self.pretrained = load_pretrained()
